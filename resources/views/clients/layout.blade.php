@@ -1,7 +1,7 @@
-@include('header')
-@include('sidebar')
-@include('navbar')
+@include('clients.header')
+@include('clients.sidebar')
+@include('clients.navbar')
 
-@yield('contenu-client')
+@yield('contenu_client')
 
-@include('footer')
+@include('clients.footer')

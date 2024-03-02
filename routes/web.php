@@ -25,6 +25,18 @@ Route::get('signin', function () {
     return view("sign.signin");
 })->name("seconnecter");
 
-Route::get('clients', function () {
-    return view("clients.header");
+Route::get('client', function () {
+    return view("clients.main");
 })->name("clients");
+
+Route::get('transaction', function () {
+    return view("clients.transaction");
+})->name("transaction");
+
+Route::get('activite', function () {
+    return view("clients.activite");
+})->name("activite");
+
+Route::get('addaccount', function () {
+    return view("clients.addaccount");
+})->name("addaccount");

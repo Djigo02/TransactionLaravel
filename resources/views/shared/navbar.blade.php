@@ -26,10 +26,10 @@
         </div>
         <div class="d-flex">
           <div class="nav-item bg-warning rounded">
-            <a class="nav-link txt-white" href="{{route('sinscrire')}}">Devenir Client</a>
+            <a class="nav-link" style="color:#fff" href="{{route('sinscrire')}}">Devenir Client</a>
           </div>
           <div class="nav-item bg-success rounded ml-1">
-            <a class="nav-link txt-white" href="{{route('seconnecter')}}">Se Connecter</a>
+            <a class="nav-link" style="color:#fff" href="{{route('seconnecter')}}">Se Connecter</a>
           </div>
         </div>
       </div>
