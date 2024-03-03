@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Utilisateur;
-use App\Http\Requests\StoreUtilisateurRequest;
-use App\Http\Requests\UpdateUtilisateurRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UtilisateurController extends Controller
 {
@@ -27,9 +27,26 @@ class UtilisateurController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUtilisateurRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'email' => 'required|unique:utilisateurs|email',
+            'prenom' => 'required|min:2',
+            'nom' => 'required|min:2',
+            'telephone' => 'required|min:2',
+            'motdepasse' => 'required|min:4',
+        ]);
+
+        $user = new Utilisateur();
+        $user->prenom = $request->prenom;
+        $user->nom = $request->nom;
+        $user->telephone = $request->telephone;
+        $user->motdepasse = Hash::make($request->motdepasse);
+        $user->email = $request->email;
+        $user->idProfil = 1;
+        $user->save();
+        return redirect()->route('seconnecter')->with('success','Inserer avec succée');
     }
 
     /**
@@ -51,7 +68,7 @@ class UtilisateurController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUtilisateurRequest $request, Utilisateur $utilisateur)
+    public function update(Request $request, Utilisateur $utilisateur)
     {
         //
     }
@@ -62,5 +79,26 @@ class UtilisateurController extends Controller
     public function destroy(Utilisateur $utilisateur)
     {
         //
+    }
+
+    // Se connecter
+
+    public function login(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'motdepasse' => 'required',
+        ]);
+
+        $user = Utilisateur::where('email', $request->email)->first();
+        if(!$user){
+            return back()->with('error','Email et/ou mot de passe incorrect ! ');
+        }else{
+            $isValid = Hash::check($request->motdepasse, $user->motdepasse);
+            if($isValid){
+                return redirect()->route('clients')->with('auth',$user);
+            }else{
+                return back()->with('error','Email et/ou mot de passe incorrect ! ');
+            }
+        }
     }
 }

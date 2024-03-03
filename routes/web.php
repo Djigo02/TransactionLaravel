@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UtilisateurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,6 @@ Route::get('activite', function () {
 Route::get('addaccount', function () {
     return view("clients.addaccount");
 })->name("addaccount");
+
+Route::resource('utilisateurs',UtilisateurController::class);
+Route::post('', [UtilisateurController::class,'login'])->name('utilisateurs.login');
