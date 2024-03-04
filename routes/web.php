@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilisateurController;
 
@@ -30,10 +31,20 @@ Route::get('client', function () {
     return view("clients.main");
 })->name("clients");
 
+// Page d'accueil du guichetier
+Route::get('guichetier', function () {
+    return view("guichetier.main");
+})->name("guichetiers");
+
+// depot du guichetier
+Route::post('guichetier', [UtilisateurController::class, 'depot'])->name("guichetier.depot");
+
+// Le client veut faire un transaction on lui affiche le formulaire de transaction
 Route::get('transaction', function () {
     return view("clients.transaction");
 })->name("transaction");
 
+// Le client veut voir ses activités financieres
 Route::get('activite', function () {
     return view("clients.activite");
 })->name("activite");
@@ -44,3 +55,6 @@ Route::get('addaccount', function () {
 
 Route::resource('utilisateurs',UtilisateurController::class);
 Route::post('', [UtilisateurController::class,'login'])->name('utilisateurs.login');
+Route::delete('', [UtilisateurController::class,'logout'])->name('utilisateurs.logout');
+
+Route::resource('comptes',CompteController::class);

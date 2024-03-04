@@ -10,31 +10,30 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-body">
-                      <form action="">
-                        
+                      <form action="{{route('comptes.store')}}" method="POST">
+                        @csrf
                         <div class="containerForm">
                           <div class="formulaire" id="Form1" action="">
                             <h3>Creer un compte</h3>
-                            <input class="form-control" type="text" placeholder="Email" required />
-                            <input class="form-control" type="password" placeholder="Mot de passe" required />
+                            <h4>Vous êtes sur le point de creer un compte</h4>
                     
                             <div class="btn-box">
-                              <button type="button" id="Next1">Next</button>
+                              <button type="button" id="Next1">Commencer</button>
                             </div>
                           </div>
                     
-                          <div class="formulaire" id="Form2" action="">
+                          <div class="formulaire" id="Form2">
                             <h3>Choisissez votre pack</h3>
-                            <select class="form-control" name="pack">
+                            <select class="form-control" name="pack" required>
                               <option value="">Votre pack</option>
-                              <option value="">Standard</option>
-                              <option value="">Gold</option>
-                              <option value="">VIP</option>
+                              <option value="1">Standard</option>
+                              <option value="2">Premium</option>
+                              <option value="3">Gold</option>
                             </select>
                     
                             <div class="btn-box">
-                              <button type="button" id="Back1">Back</button>
-                              <button type="button" id="Next2">Next</button>
+                              <button type="button" id="Back1">Retour</button>
+                              <button type="button" id="Next2">Suivant</button>
                             </div>
                           </div>
                     
@@ -42,25 +41,29 @@
                             <h3>Selectionner le type de compte</h3>
                             <select class="form-control" name="tcompte">
                               <option value="">Choisissez le type de compte</option>
-                              <option value="">Epargne</option>
-                              <option value="">Courant</option>
+                              @if (Session::get('nbEpargne')==0)
+                                <option value="2">Epargne</option>  
+                              @endif
+                              @if (Session::get('nbCourant')==0)
+                                <option value="1">Courant</option>
+                              @endif
                             </select>
                             <div class="btn-box">
-                              <button type="button" id="Back2">Back</button>
-                              <button type="submit">Soumettre</button>
+                              <button type="button" id="Back2">Retour</button>
+                              <button type="submit">Creer</button>
                             </div>
                           </div>
                     
                           <div class="step-row">
                             <div id="progress"></div>
                             <div class="step-col">
-                              <small>Etape 1</small>
+                              <small>Commençons</small>
                             </div>
                             <div class="step-col">
-                              <small>Etape 2</small>
+                              <small>Bientot fini</small>
                             </div>
                             <div class="step-col">
-                              <small>Etape 3</small>
+                              <small>Creation</small>
                             </div>
                           </div>
                         </div>

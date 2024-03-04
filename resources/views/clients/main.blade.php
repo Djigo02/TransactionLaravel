@@ -8,7 +8,7 @@
             <div class="animated fadeIn">
                 <!-- Widgets  -->
                 <div class="row">
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-6 offset-lg-2 offset-md-2">
                         <div class="card">
                             <div class="card-body">
                                 <div class="stat-widget-five">
@@ -17,44 +17,13 @@
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text">$<span class="count">23569</span></div>
-                                            <div class="stat-heading">Revenue</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-2">
-                                        <i class="pe-7s-cart"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">3435</span></div>
-                                            <div class="stat-heading">Sales</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="stat-widget-five">
-                                    <div class="stat-icon dib flat-color-3">
-                                        <i class="pe-7s-browser"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">349</span></div>
-                                            <div class="stat-heading">Templates</div>
+                                            @if (Session::has('nbCourant') && Session::get('nbCourant')==1)
+                                                <div class="stat-text"><span class="count">0</span></div>
+                                            @endif
+                                            @if (Session::has('nbCourant') && Session::get('nbCourant')==0)
+                                                <div class="stat-text" style="font-size: 12px">Pas de compte</div>
+                                            @endif
+                                            <div class="stat-heading">Solde</div>
                                         </div>
                                     </div>
                                 </div>
@@ -67,12 +36,36 @@
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-4">
-                                        <i class="pe-7s-users"></i>
+                                        <i class="pe-7s-piggy"></i>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text"><span class="count">2986</span></div>
-                                            <div class="stat-heading">Clients</div>
+                                            {{-- Verification du compte epargne  --}}
+                                            @if (Session::has('nbEpargne') && Session::get('nbEpargne')==1)
+                                                <div class="stat-text"><span class="count">0</span></div>
+                                            @endif
+                                            @if (Session::has('nbEpargne') && Session::get('nbEpargne')==0)
+                                                <div class="stat-text" style="font-size: 12px">Pas de compte</div>
+                                            @endif
+                                            <div class="stat-heading" style="font-size: 12px">Solde Epargne</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="stat-widget-five">
+                                    <div class="stat-icon dib flat-color-4">
+                                        <i class="pe-7s-credit"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="text-left dib">
+                                            <div class="stat-text"><span class="count">0</span></div>
+                                            <div class="stat-heading" style="font-size: 12px">Cartes Virtuelles</div>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +79,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="box-title">Traffic </h4>
+                                <h4 class="box-title">Bienvenue,  </h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-8">
