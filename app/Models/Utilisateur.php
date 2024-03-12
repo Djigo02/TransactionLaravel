@@ -11,6 +11,6 @@ class Utilisateur extends Model
     protected $table = "utilisateurs";
     public function comptes()
     {
-        return $this->hasMany(Compte::class, 'idutilisateur');
+        return $this->hasMany(Compte::class,"idutilisateur");
     }
 }

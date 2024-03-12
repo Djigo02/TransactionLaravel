@@ -130,7 +130,6 @@ class UtilisateurController extends Controller
                         return redirect()->route('clients');
                     case 2:
                         $comptes = Compte::all();
-                        dd($comptes);
                         return view('admin.main', ['comptes' => $comptes]);
                     case 3:
                         return redirect()->route('guichetiers');

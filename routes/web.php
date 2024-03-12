@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilisateurController;
+use App\Models\Compte;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,8 @@ Route::get('client', function () {
 })->name("clients");
 
 Route::get('admin', function () {
-    return view("admin.main");
+    $comptes = Compte::all();
+    return view('admin.main', ['comptes' => $comptes]);
 })->name("admins");
 
 // Page d'accueil du guichetier
@@ -42,6 +44,9 @@ Route::get('guichetier', function () {
 
 // depot du guichetier
 Route::post('guichetier', [UtilisateurController::class, 'depot'])->name("guichetier.depot");
+
+// changer de status de compte blocker ou deblocker
+Route::post('status/{compte}', [CompteController::class, 'changestatus'])->name("changestatus");
 
 // Le client veut faire un transaction on lui affiche le formulaire de transaction
 Route::get('transaction', function () {

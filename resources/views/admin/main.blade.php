@@ -12,14 +12,11 @@
                             <div class="card-body">
                                 <h4 class="box-title">Bonjour Administrateur, {{Session::get('auth')['prenom']}} {{Session::get('auth')['nom']}} </h4>
                             </div>
+                            @if (Session::has('success'))
+                                <div class="alert alert-success col-8 offset-2 text-center">{{Session::get('success')}}</div>
+                            @endif
                             <div class="row">
                                 <div class="col-lg-8">
-                                    @if (Session::has('message'))
-                                        <div class="alert alert-success">{{Session::get('message')}}</div>
-                                    @endif
-                                    @if (Session::has('echec'))
-                                        <div class="alert alert-danger">{{Session::get('echec')}}</div>
-                                    @endif
                                     
                                     <div class="col-10 offset-1">
                                         {{-- Debut Liste --}}
@@ -28,21 +25,23 @@
                                             <tr>
                                               <th scope="col">#</th>
                                               <th scope="col">RIB</th>
-                                              <th scope="col">Prenom</th>
+                                              <th scope="col">Type compte</th>
                                               <th scope="col">Email</th>
                                               <th scope="col">Action</th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                             @foreach ($comptes as $compte)
+                                            {{-- {{$user = $compte->utilisateur}} --}}
                                             <tr>
                                                 <th scope="row">{{$compte->id}}</th>
                                                 <td>{{$compte->RIB}}</td>
                                                 {{-- <td>{{$compte->utilisateur ? $compte->utilisateur->prenom : 'Utilisateur non trouvé'}}</td> --}}
-                                                <td>{{$compte->utilisateur ? $compte->utilisateur->prenom : 'Utilisateur non trouvé'}}</td>
+                                                <td>{{$compte->typecompte == 1 ? "Courant" : 'Epargne'}}</td>
                                                 <td>{{$compte->utilisateur ? $compte->utilisateur->email : 'Email non trouvé'}}</td>
                                                 <td>
-                                                    <form action="" method="post">
+                                                    <form action="{{route('changestatus',$compte)}}" method="post">
+                                                        @csrf
                                                         <button class="btn btn-info">
                                                             @if ($compte->status==1)
                                                                 Désactiver

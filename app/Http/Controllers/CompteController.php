@@ -185,4 +185,13 @@ class CompteController extends Controller
             return back()->with('error', "Une erreur est survenue, Veuillez reessayer ulterieurement !".$e->getMessage());
         }
     }
+
+    public function changestatus(Compte $compte){
+        $c = Compte::find($compte->id);
+        $c->status = $c->status==1 ? 0 : 1;
+        $state = $c->status==1 ? 'déblocké' : 'blocké';
+        $c->update();
+
+        return redirect(route('admins'))->with("success","Compte $state");
+    }
 }

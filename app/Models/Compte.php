@@ -14,6 +14,6 @@ class Compte extends Model
 
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class, 'idutilisateur');
+        return $this->belongsTo(Utilisateur::class,'idutilisateur');
     }
 }
