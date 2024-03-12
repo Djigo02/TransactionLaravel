@@ -18,7 +18,7 @@
                                     <div class="stat-content">
                                         <div class="text-left dib">
                                             @if (Session::has('nbCourant') && Session::get('nbCourant')==1)
-                                                <div class="stat-text"><span class="count">0</span></div>
+                                                <div class="stat-text"><span class="count">{{Session::get('CompteCourant')['solde']}}</span></div>
                                             @endif
                                             @if (Session::has('nbCourant') && Session::get('nbCourant')==0)
                                                 <div class="stat-text" style="font-size: 12px">Pas de compte</div>
@@ -42,7 +42,7 @@
                                         <div class="text-left dib">
                                             {{-- Verification du compte epargne  --}}
                                             @if (Session::has('nbEpargne') && Session::get('nbEpargne')==1)
-                                                <div class="stat-text"><span class="count">0</span></div>
+                                                <div class="stat-text"><span class="count">{{Session::get('CompteEpargne')['solde']}}</span></div>
                                             @endif
                                             @if (Session::has('nbEpargne') && Session::get('nbEpargne')==0)
                                                 <div class="stat-text" style="font-size: 12px">Pas de compte</div>
@@ -79,7 +79,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="box-title">Bienvenue,  </h4>
+                                <h4 class="box-title">Bienvenue,  {{Session::get('auth')['prenom']}} {{Session::get('auth')['nom']}} </h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-8">

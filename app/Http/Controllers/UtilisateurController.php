@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SignupMail;
+use App\Mail\DepotMail;
 use App\Models\Compte;
 use App\Models\Depot;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Exception;
+use Illuminate\Support\Facades\Mail;
+use PDOException;
 
 class UtilisateurController extends Controller
 {
@@ -49,7 +54,8 @@ class UtilisateurController extends Controller
         $user->email = $request->email;
         $user->idProfil = 1;
         $user->save();
-        return redirect()->route('seconnecter')->with('success','Inserer avec succée');
+        Mail::to($user->email)->send(new SignupMail($user));
+        return redirect()->route('seconnecter')->with('success','Inscription réussie avec succée');
     }
 
     /**
@@ -92,7 +98,8 @@ class UtilisateurController extends Controller
             'motdepasse' => 'required',
         ]);
 
-        $user = Utilisateur::where('email', $request->email)->first();
+        try{
+            $user = Utilisateur::where('email', $request->email)->first();
 
         if(!$user){
             return back()->with('error','Email et/ou mot de passe incorrect ! ');
@@ -104,12 +111,14 @@ class UtilisateurController extends Controller
 
                 if($hasCourant){
                     Session::put('nbCourant', 1);
+                    Session::put('CompteCourant', $hasCourant);
                 }else{
                     Session::put('nbCourant', 0);
                 }
 
                 if($hasEpargne){
                     Session::put('nbEpargne', 1);
+                    Session::put('CompteEpargne', $hasEpargne);
                 }else{
                     Session::put('nbEpargne', 0);
                 }
@@ -120,7 +129,9 @@ class UtilisateurController extends Controller
                     case 1:
                         return redirect()->route('clients');
                     case 2:
-                        return redirect()->route('admins');
+                        $comptes = Compte::all();
+                        dd($comptes);
+                        return view('admin.main', ['comptes' => $comptes]);
                     case 3:
                         return redirect()->route('guichetiers');
                 }
@@ -129,6 +140,9 @@ class UtilisateurController extends Controller
                 return back()->with('error','Email et/ou mot de passe incorrect ! ');
             }
         }
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Probleme de connexion. Veuillez reessayer ulterieurement !');
+        }
 
     }
     
@@ -136,6 +150,8 @@ class UtilisateurController extends Controller
                 
         Session::forget('nbCourant');
         Session::forget('nbEpargne');
+        Session::forget('CompteCourant');
+        Session::forget('CompteEpargne');
         Session::forget('auth');
         return redirect()->route('index');
 
@@ -150,6 +166,7 @@ class UtilisateurController extends Controller
         );
         $compte = Compte::where('rib', $request->rib)->first();
         if($compte){
+            $user = Utilisateur::find($compte->idutilisateur);
             $depot = new Depot();
             $depot->idutilisateur = Session::get('auth')['id'];
             $depot->rib = $request->rib;
@@ -157,8 +174,18 @@ class UtilisateurController extends Controller
             $depot->save();
             $compte->solde += intval($request->montant);
             $compte->update();
+            $info = [
+                'rib' => $compte->RIB,
+                'nom' => $user->nom,
+                'prenom' => $user->prenom,
+                'montant' => $depot->solde,
+                'solde' => $compte->solde
+            ];
+            Mail::to($user->email)->send(new DepotMail($info));
             return redirect()->route('guichetiers')->with('message','Rechargement effectué');
         }
         return redirect()->route('guichetiers')->with('echec','Echec lors du rechargement');
     }
+
+
 }

@@ -31,6 +31,10 @@ Route::get('client', function () {
     return view("clients.main");
 })->name("clients");
 
+Route::get('admin', function () {
+    return view("admin.main");
+})->name("admins");
+
 // Page d'accueil du guichetier
 Route::get('guichetier', function () {
     return view("guichetier.main");
@@ -43,6 +47,9 @@ Route::post('guichetier', [UtilisateurController::class, 'depot'])->name("guiche
 Route::get('transaction', function () {
     return view("clients.transaction");
 })->name("transaction");
+
+// Le client veut faire un transaction on lui affiche le formulaire de transaction
+Route::post('transac', [CompteController::class, 'transaction'])->name("comptes.transaction");
 
 // Le client veut voir ses activités financieres
 Route::get('activite', function () {

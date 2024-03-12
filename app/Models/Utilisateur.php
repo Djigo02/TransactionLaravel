@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Utilisateur extends Model
 {
     use HasFactory;
+    protected $table = "utilisateurs";
+    public function comptes()
+    {
+        return $this->hasMany(Compte::class, 'idutilisateur');
+    }
 }

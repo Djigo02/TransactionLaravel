@@ -10,8 +10,31 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card-body">
-                        <!-- <canvas id="TrafficChart"></canvas>   -->
-                        <div id="traffic-chart" class="traffic-chart"></div>
+                        @if (Session::has('error'))
+                            <div class="alert alert-danger">
+                                {{Session::get('error')}}
+                            </div>
+                        @endif
+                        @if (Session::has('success'))
+                            <div class="alert alert-success">
+                                {{Session::get('success')}}
+                            </div>
+                        @endif
+                        
+                        <div class="card">
+                            <form action="{{route('comptes.transaction')}}"  class="form col-8 offset-2 mt-3" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="">RIB du bénéfière</label>
+                                    <input id="rib" name="rib" type="number" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="fw-bold">Solde</label>
+                                    <input id="solde" name="solde" type="number" min="500" class="form-control">
+                                </div>
+                                <button id="sendbtn" class="btn btn-info mb-3">Envoyer</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -51,4 +74,5 @@
         </div>
     </div><!-- /# column -->
 </div>
+
 @endsection
