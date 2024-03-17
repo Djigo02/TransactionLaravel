@@ -80,12 +80,28 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="box-title">Bienvenue,  {{Session::get('auth')['prenom']}} {{Session::get('auth')['nom']}} </h4>
+                                <p>Votre historique de transaction.</p>
                             </div>
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="card-body">
                                         <!-- <canvas id="TrafficChart"></canvas>   -->
-                                        <div id="traffic-chart" class="traffic-chart"></div>
+                                        <div class="list-group">
+                                        @if (count($historique)>0)
+                                            @foreach ($historique as $item)
+                                            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">Vers : {{$item->RIB}}</h5>
+                                                <small>{{$item->created_at}}</small>
+                                                </div>
+                                                <p class="mb-1">Montant : {{$item->solde}} FCFA</p>
+                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                            </a>
+                                            @endforeach
+                                        @else
+                                            <p>Aucune activités pour le moment !</p>
+                                        @endif
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">

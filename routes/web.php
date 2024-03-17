@@ -4,6 +4,8 @@ use App\Http\Controllers\CompteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilisateurController;
 use App\Models\Compte;
+use App\Models\Depot;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,7 @@ Route::get('signin', function () {
 })->name("seconnecter");
 
 Route::get('client', function () {
-    return view("clients.main");
+    return view("clients.main", ['historique'=>Depot::all()->where('idutilisateur',Session::get('auth')['id'])]);
 })->name("clients");
 
 Route::get('admin', function () {
@@ -57,7 +59,7 @@ Route::get('transaction', function () {
 Route::post('transac', [CompteController::class, 'transaction'])->name("comptes.transaction");
 
 // Le client veut voir ses activités financieres
-Route::get('activite', function () {
+Route::get('carte-virtuelle', function () {
     return view("clients.activite");
 })->name("activite");
 

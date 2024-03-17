@@ -136,6 +136,7 @@ class UtilisateurController extends Controller
                 notify()->success('Connexion réussie', "Bonjour $user->prenom $user->nom");
                 switch ($user->idProfil) {
                     case 1:
+                        
                         return redirect()->route('clients');
                     case 2:
                         $comptes = Compte::all();

@@ -16,7 +16,7 @@
                         </li>
                     @endif
                     <li class="">
-                        <a href="{{route('activite')}}"><i class="menu-icon fa fa-money"></i>Mes activités</a>
+                        <a href="{{route('activite')}}"><i class="menu-icon fa fa-money"></i>Mes cartes virtuelles</a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->

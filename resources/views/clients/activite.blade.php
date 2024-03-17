@@ -4,8 +4,37 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-body">
-                <h4 class="box-title">Activités </h4>
+            <div class="card-body d-flex justify-content-between">
+                <h4 class="box-title">Mes cartes virtuelles </h4>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gencarte">
+                    Creer une carte virtuelle
+                </button>
+  
+                <!-- Modal -->
+                <div class="modal fade" id="gencarte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title fs-5" id="exampleModalLabel">Creation de votre carte</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        {{-- Form start --}}
+                        <form action="">
+                        <div class="modal-body">
+                        ...
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary">Generer la carte</button>
+                        </form>
+                        {{-- Form End --}}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {{-- Fin modal --}}
             </div>
             <div class="row">
                 <div class="col-lg-8">
@@ -51,4 +80,5 @@
         </div>
     </div><!-- /# column -->
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 @endsection

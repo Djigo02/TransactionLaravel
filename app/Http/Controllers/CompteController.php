@@ -6,6 +6,7 @@ use App\Mail\AccountMail;
 use App\Mail\DepotMail;
 use App\Mail\TransactionMail;
 use App\Models\Compte;
+use App\Models\Depot;
 use App\Models\Pack;
 use App\Models\Utilisateur;
 use Illuminate\Support\Facades\Session;
@@ -161,29 +162,42 @@ class CompteController extends Controller
                                 Session::put('CompteCourant',$compteSender);
                             }
                             
-                            if(Session::has('CompteEpargne' && Session::get('CompteEpargne')['rib']==$compteRecieve->rib)){
+                            if(Session::has('CompteEpargne') && Session::get('CompteEpargne')['rib']==$compteRecieve->rib){
                                 Session::put('CompteEpargne',$compteRecieve);
                             }
+                            
+                            // Enregistrez la transaction
+                            $depot = new Depot();
+                            $depot->idutilisateur = Session::get('auth')['id'];
+                            $depot->RIB = $request->rib;
+                            $depot->solde = $request->solde;
+                            $depot->save();
 
                             Mail::to(Session::get('auth')['email'])->send(new TransactionMail($info));
                             Mail::to($user->email)->send(new DepotMail($beneficiare));
+                            smilify('success', 'Transfert reussie !');
                             return back()->with('success','Transfert reussie !');
                         }else{
                             /**
                              * Si le compte est celui du connecté (courant) ou un compte epargne d'un autre utilisateur
                              */
+                            connectify('error', 'Echec lors du transfert', 'Vous ne pouvez pas effectuer de transfert sur ce compte !');
                             return back()->with('error','Vous ne pouvez pas effectuer de transfert sur ce compte !');
                         }
                     }else{
+                        connectify('error', 'Echec lors du transfert', 'Le compte auquel vous essayer de transferer n\'existe pas ou a été blocké !');
                         return back()->with('error','Le compte auquel vous essayer de transferer n\'existe pas ou a été blocké !');
                     }
                 }else{
+                    smilify('error', 'Solde insufisant ou plafond atteint !');
                     return back()->with('error','Solde insufisant ou plafond atteint !');
                 }
             }else{
+                smilify('error', 'Vous ne possedez pas de compte !');
                 return back()->with('error','Vous ne possedez pas de compte !');
             }
         }catch(Exception $e){
+            connectify('error', 'Probleme de connexion', 'Veuillez reessayer ulterieurement !');
             return back()->with('error', "Une erreur est survenue, Veuillez reessayer ulterieurement !".$e->getMessage());
         }
     }
@@ -193,7 +207,7 @@ class CompteController extends Controller
         $c->status = $c->status==1 ? 0 : 1;
         $state = $c->status==1 ? 'déblocké' : 'blocké';
         $c->update();
-
+        smilify('success', 'Statut changer avec succés');
         return redirect(route('admins'))->with("success","Compte $state");
     }
 }
