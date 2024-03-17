@@ -15,6 +15,7 @@
     <link href="all/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Additional CSS Files -->
+    @notifyCss
     <link rel="stylesheet" href="all/assets/css/fontawesome.css">
     <link rel="stylesheet" href="all/assets/css/templatemo-finance-business.css">
     <link rel="stylesheet" href="all/assets/css/owl.css">

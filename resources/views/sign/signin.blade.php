@@ -19,3 +19,7 @@
         </div>
     </div>
 @endsection
+
+@section('title')
+    Se connecter
+@endsection

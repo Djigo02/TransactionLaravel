@@ -4,7 +4,7 @@
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="{{route('admins')}}"><i class="menu-icon fa fa-laptop"></i>Tableau de bord </a>
+                        <a href="{{route('admins')}}"><i class="menu-icon fa fa-laptop"></i>Tableau de bord</a>
                     </li>
                     <li class="">
                         {{-- <a href="{{route('mesrechargements')}}"><i class="menu-icon fa fa-send"></i>Mes rechargements </a> --}}

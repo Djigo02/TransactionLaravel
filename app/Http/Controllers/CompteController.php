@@ -57,12 +57,14 @@ class CompteController extends Controller
 
         if($hasCourant){
             Session::put('nbCourant', 1);
+            Session::put('CompteCourant', $hasCourant);
         }else{
             Session::put('nbCourant', 0);
         }
 
         if($hasEpargne){
             Session::put('nbEpargne', 1);
+            Session::put('CompteEpargne', $hasEpargne);
         }else{
             Session::put('nbEpargne', 0);
         }

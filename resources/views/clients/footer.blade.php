@@ -235,5 +235,8 @@
             // Bar Chart #flotBarChart End
         });
     </script>
+    {{-- Laravel notify --}}
+    <x-notify::notify />
+    @notifyJs
 </body>
 </html>

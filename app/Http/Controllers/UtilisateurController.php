@@ -34,6 +34,7 @@ class UtilisateurController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * Methode s'inscrire
      */
     public function store(Request $request)
     {
@@ -46,16 +47,22 @@ class UtilisateurController extends Controller
             'motdepasse' => 'required|min:4',
         ]);
 
-        $user = new Utilisateur();
-        $user->prenom = $request->prenom;
-        $user->nom = $request->nom;
-        $user->telephone = $request->telephone;
-        $user->motdepasse = Hash::make($request->motdepasse);
-        $user->email = $request->email;
-        $user->idProfil = 1;
-        $user->save();
-        Mail::to($user->email)->send(new SignupMail($user));
-        return redirect()->route('seconnecter')->with('success','Inscription réussie avec succée');
+        try{
+            $user = new Utilisateur();
+            $user->prenom = $request->prenom;
+            $user->nom = $request->nom;
+            $user->telephone = $request->telephone;
+            $user->motdepasse = Hash::make($request->motdepasse);
+            $user->email = $request->email;
+            $user->idProfil = 1;
+            $user->save();
+            Mail::to($user->email)->send(new SignupMail($user));
+            emotify('success', 'Vous venez de vous inscrire, connectez-vous !');
+            return redirect()->route('seconnecter')->with('success','Inscription réussie avec succée');
+        }catch(Exception $e){
+            connectify('error', 'Probleme de connexion', 'Veuillez reessayer ulterieurement !');
+            return redirect()->back()->with('error','Probleme de connexion. Veuillez reessayer ulterieurement !');
+        }
     }
 
     /**
@@ -102,6 +109,7 @@ class UtilisateurController extends Controller
             $user = Utilisateur::where('email', $request->email)->first();
 
         if(!$user){
+            notify()->error("Email et/ou mot de passe incorrect ! ");
             return back()->with('error','Email et/ou mot de passe incorrect ! ');
         }else{
             $isValid = Hash::check($request->motdepasse, $user->motdepasse);
@@ -125,6 +133,7 @@ class UtilisateurController extends Controller
                 
                 Session::put('auth', $user);
                 
+                notify()->success('Connexion réussie', "Bonjour $user->prenom $user->nom");
                 switch ($user->idProfil) {
                     case 1:
                         return redirect()->route('clients');
@@ -136,10 +145,12 @@ class UtilisateurController extends Controller
                 }
 
             }else{
+                notify()->error("Email et/ou mot de passe incorrect ! ");
                 return back()->with('error','Email et/ou mot de passe incorrect ! ');
             }
         }
         }catch(Exception $e){
+            connectify('error', 'Probleme de connexion', 'Veuillez reessayer ulterieurement !');
             return redirect()->back()->with('error','Probleme de connexion. Veuillez reessayer ulterieurement !');
         }
 
@@ -152,6 +163,7 @@ class UtilisateurController extends Controller
         Session::forget('CompteCourant');
         Session::forget('CompteEpargne');
         Session::forget('auth');
+        smilify('success', 'A la prochaine, Ba Benene yoon !');
         return redirect()->route('index');
 
     }
@@ -181,10 +193,11 @@ class UtilisateurController extends Controller
                 'solde' => $compte->solde
             ];
             Mail::to($user->email)->send(new DepotMail($info));
+            emotify('success', 'Rechargement effectuer');
             return redirect()->route('guichetiers')->with('message','Rechargement effectué');
         }
+        notify()->error("Echec lors du rechargement !");
         return redirect()->route('guichetiers')->with('echec','Echec lors du rechargement');
     }
-
 
 }

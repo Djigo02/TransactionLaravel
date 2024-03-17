@@ -17,3 +17,7 @@
     </div>
 </div>
 @endsection
+
+@section('title')
+    S'inscrire
+@endsection

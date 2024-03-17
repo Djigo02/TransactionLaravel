@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Bootstrap core CSS -->
     <link href="all/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <title>Se connecter</title>
+    <title>@yield('title')</title>
+    @notifyCss
     <link rel="stylesheet" href="{{asset('sign/style.css')}}">
 </head>
 <body>
@@ -14,5 +15,7 @@
     @yield('sign')
 
     <script src="{{asset('sign/script.js')}}"></script>
+    <x-notify::notify />
+    @notifyJs
 </body>
 </html>
