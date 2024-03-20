@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CompteController;
+use App\Http\Controllers\CarteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilisateurController;
 use App\Models\Compte;
+use App\Models\Carte;
 use App\Models\Depot;
 use Illuminate\Support\Facades\Session;
 
@@ -58,9 +60,9 @@ Route::get('transaction', function () {
 // Le client veut faire un transaction on lui affiche le formulaire de transaction
 Route::post('transac', [CompteController::class, 'transaction'])->name("comptes.transaction");
 
-// Le client veut voir ses activités financieres
+// Le client veut voir ses cartes virtuelles
 Route::get('carte-virtuelle', function () {
-    return view("clients.activite");
+    return view("clients.activite", ['cartes' => Carte::all()->where('idU',Session::get('auth')['id'])]);
 })->name("activite");
 
 Route::get('addaccount', function () {
@@ -72,3 +74,6 @@ Route::post('', [UtilisateurController::class,'login'])->name('utilisateurs.logi
 Route::delete('', [UtilisateurController::class,'logout'])->name('utilisateurs.logout');
 
 Route::resource('comptes',CompteController::class);
+
+Route::resource('cartes',CarteController::class);
+

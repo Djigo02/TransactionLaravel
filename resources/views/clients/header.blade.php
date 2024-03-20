@@ -65,6 +65,85 @@
             height: 160px;
         }
 
+        .container {
+  width: 100%;
+  height: 100%;
+  margin: 3% auto;
+}
+
+.card-v {
+  width: 400px;
+  height: 280px;
+  margin: 0 auto;
+  background: linear-gradient(
+    45deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(0, 140, 177, 1) 35%,
+    rgba(0, 29, 125, 1) 100%
+  );
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+}
+
+.intern {
+  padding: 20px;
+}
+
+.approximation {
+  width: 25px;
+  transform: rotate(90deg);
+}
+
+.chip {
+  height: 40px;
+  position: relative;
+  left: 80%;
+  bottom: 40px;
+}
+
+.card-number {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  display: flex;
+}
+
+.card-holder {
+  color: whitesmoke;
+}
+
+.card-v label {
+  font-size: 0.7rem;
+}
+
+.card-infos {
+  display: flex;
+  width: 40%;
+  justify-content: space-between;
+  color: white;
+}
+
+#credit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1.1rem;
+  color: white;
+  text-transform: uppercase;
+}
+
+.number-container,
+.name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.expiration-container,
+.cvv-container {
+  width: 50%;
+}
+
     </style>
 </head>
 

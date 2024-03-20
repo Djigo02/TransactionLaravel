@@ -6,6 +6,7 @@ use App\Mail\SignupMail;
 use App\Mail\DepotMail;
 use App\Models\Compte;
 use App\Models\Depot;
+use App\Models\Carte;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -136,7 +137,8 @@ class UtilisateurController extends Controller
                 notify()->success('Connexion réussie', "Bonjour $user->prenom $user->nom");
                 switch ($user->idProfil) {
                     case 1:
-                        
+                        $nbV = Carte::all()->where('idU',$user->id);
+                        Session::put('nbCarte', count($nbV) != 0 ? count($nbV) : 0);
                         return redirect()->route('clients');
                     case 2:
                         $comptes = Compte::all();
@@ -163,6 +165,7 @@ class UtilisateurController extends Controller
         Session::forget('nbEpargne');
         Session::forget('CompteCourant');
         Session::forget('CompteEpargne');
+        Session::forget('nbCarte');
         Session::forget('auth');
         smilify('success', 'A la prochaine, Ba Benene yoon !');
         return redirect()->route('index');
