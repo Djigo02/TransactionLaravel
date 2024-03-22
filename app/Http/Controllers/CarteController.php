@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountMail;
+use App\Mail\CarteMail;
 use App\Models\Carte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Compte;
+use Illuminate\Support\Facades\Mail;
 
 class CarteController extends Controller
 {
@@ -36,22 +39,42 @@ class CarteController extends Controller
             'solde' => 'required|min:3',
         ]);
 
-        $carte = new Carte();
-        $carte->solde = $request->solde;
-        $carte->dateexp = $request->dateexp;
-        $carte->numero = mt_rand(10000000000000, 90000000000000);
-        $carte->cvv = mt_rand(300, 999);
-        $carte->username = Session::has("auth") ? Session::get("auth")['prenom']." ".Session::get("auth")['nom'] :"John Doe";
-        $carte->idU = Session::get("auth")['id'];
         $c = Compte::all()->where('idutilisateur',Session::get('auth')['id'])->where('typecompte',1)->first();
-        $carte->idC = $c->id;
-        $carte->save();
 
-        $nbV = Carte::all()->where('idU',Session::get('auth')['id']);
-        Session::put('nbCarte', count($nbV) !=0 ? count($nbV) : 0);
+        // $c->solde>= $request->solde
+        if($c!=null ){
+            // Creation de la carte virtuelle
+            if($c->solde>= $request->solde){
+                $carte = new Carte();
+                $carte->solde = $request->solde;
+                $carte->dateexp = $request->dateexp;
+                $carte->numero = mt_rand(10000000000000, 90000000000000);
+                $carte->cvv = mt_rand(300, 999);
+                $carte->username = Session::has("auth") ? Session::get("auth")['prenom']." ".Session::get("auth")['nom'] :"John Doe";
+                $carte->idU = Session::get("auth")['id'];  
+                $carte->idC = $c->id;
+                $carte->save();
 
-        smilify('success', 'Carte crée avec success !');
-        return back();
+                // Debiter le solde du compte courant
+                $c->solde-=$carte->solde;
+                $c->update();
+                // Mettre a jour le compte courant
+                Session::put('CompteCourant',$c);
+
+                $nbV = Carte::all()->where('idU',Session::get('auth')['id']);
+                Session::put('nbCarte', count($nbV) !=0 ? count($nbV) : 0);
+
+                Mail::to(Session::get('auth')['email'])->send(new CarteMail(Session::get('auth'),$carte->numero, $carte->solde, $carte->cvv, $carte->dateexp));
+                smilify('success', 'Carte crée avec success !');
+                return back();
+            }else{
+                smilify('error', 'Votre solde est insuffisant!');
+                return back();
+            }
+        }else{
+            smilify('error', 'Desole, vous devez avoir un compte courant !');
+            return back();
+        }
     }
 
     /**
