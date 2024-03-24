@@ -91,7 +91,7 @@
                                             @foreach ($historique as $item)
                                             <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                                                 <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">Vers : {{$item->RIB}}</h5>
+                                                <h5 class="mb-1">Vers <em>{{$item->RIB == 0 ? "Carte virtuelle" : $item->RIB}}</em></h5>
                                                 <small>{{$item->created_at}}</small>
                                                 </div>
                                                 <p class="mb-1">Montant : {{$item->solde}} FCFA</p>

@@ -8,6 +8,7 @@ use App\Models\Carte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Compte;
+use App\Models\Depot;
 use Illuminate\Support\Facades\Mail;
 
 class CarteController extends Controller
@@ -58,6 +59,13 @@ class CarteController extends Controller
                 // Debiter le solde du compte courant
                 $c->solde-=$carte->solde;
                 $c->update();
+                // Chaque creation sera considerer comme un depot sera ajouter au recent activite
+                $depot = new Depot();
+                $depot->rib = 0;
+                $depot->solde = $carte->solde;
+                $depot->idutilisateur = Session::get('auth')['id'];
+                $depot->save();
+
                 // Mettre a jour le compte courant
                 Session::put('CompteCourant',$c);
 
